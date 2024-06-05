@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miss Shaunna's Note Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="start-menu">
+        <h1>Miss Shaunna's Note Game</h1>
+        <img src="game-images/miss-shaunna.png" alt="Miss Shaunna">
+        <div id="player"></div>
+        <button id="play-button">Play Music</button>
+        <button id="start-button">Start Game</button>
+    </div>
+    <div id="game-content" style="display: none;">
+        <div class="composers-container">
+            <div class="left-composers">
+                <img src="composer-images/happy-bach.webp" alt="Bach" class="composer" id="composer-bach">
+                <img src="composer-images/happy-beethoven.webp" alt="Beethoven" class="composer" id="composer-beethoven">
+                <img src="composer-images/happy-mozart.webp" alt="Mozart" class="composer" id="composer-mozart">
+            </div>
+            <div class="right-composers">
+                <img src="composer-images/happy-schubert.webp" alt="Schubert" class="composer" id="composer-schubert">
+                <img src="composer-images/happy-tch.webp" alt="Tchaikovsky" class="composer" id="composer-tch">
+                <img src="composer-images/happy-chopin.webp" alt="Chopin" class="composer" id="composer-chopin">
+            </div>
+        </div>
+        <h1>Music Note Game</h1>
+        <div id="note-display"></div>
+        <div id="buttons">
+            <!-- Buttons will be generated here -->
+        </div>
+        <div id="feedback"></div>
+    </div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
+</body>
+</html>
