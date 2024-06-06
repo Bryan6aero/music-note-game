@@ -59,7 +59,7 @@ function displayNote() {
     const note = generateRandomNote();
     console.log('Generated note:', note); // Log the generated note
     const noteDisplay = document.getElementById('note-display');
-    noteDisplay.innerHTML = `<img src="images/${note}.jpg" alt="${note}">`;
+    noteDisplay.innerHTML = `<img src="images/${note}.png" alt="${note}">`;
     return note;
 }
 
