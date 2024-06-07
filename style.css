@@ -75,7 +75,7 @@ h1 {
     }
 
     .composer {
-        width: 50px; /* Reduce size for mobile */
+        width: 150px; /* Reduce size for mobile */
     }
 
     #note-display {
