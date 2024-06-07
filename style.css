@@ -64,7 +64,7 @@ h1 {
 @media (max-width: 768px) {
     .composers-container {
         flex-direction: column;
-        align-items: top;
+        align-items: center;
         top: 0;
     }
     
@@ -75,7 +75,7 @@ h1 {
     }
 
     .composer {
-        width: 150px; /* Reduce size for mobile */
+        width: 50px; /* Reduce size for mobile */
     }
 
     #note-display {
