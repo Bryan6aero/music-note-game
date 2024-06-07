@@ -64,7 +64,7 @@ h1 {
 @media (max-width: 768px) {
     .composers-container {
         flex-direction: column;
-        align-items: center;
+        align-items: top;
         top: 0;
     }
     
@@ -90,7 +90,7 @@ h1 {
     }
 
     button {
-        margin: 100px;
+        margin: 5px;
         padding: 10px;
         font-size: 14px; /* Reduce font size for buttons */
     }
