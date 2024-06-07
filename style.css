@@ -61,64 +61,37 @@ h1 {
     padding-top: 20px;
 }
 
-/* Mobile styles */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .composers-container {
         flex-direction: column;
         align-items: center;
         top: 0;
-        padding-top: 20px;
     }
-
+    
     .left-composers, .right-composers {
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-around;
+        width: 100%;
     }
 
     .composer {
-        width: 100px; /* Adjusted size for mobile */
-        margin: 5px;
+        width: 150px; /* Reduce size for mobile */
+    }
+
+    #note-display {
+        margin-top: 80px; /* Add margin to push down note display */
     }
 
     #buttons {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin: 10px;
+        margin-top: 20px;
     }
 
-    #buttons button {
-        flex: 1 1 calc(33.333% - 10px); /* Make buttons take up equal space */
+    button {
         margin: 5px;
-    }
-}
-
-/* Tablet and desktop styles */
-@media (min-width: 768px) {
-    .composers-container {
-        flex-direction: row;
-        justify-content: space-between;
-        top: 10%;
-    }
-
-    .left-composers, .right-composers {
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-    .composer {
-        width: 200px;
-        margin: 5px;
-    }
-
-    #buttons {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    #buttons button {
-        margin: 5px;
-        padding: 10px 20px;
+        padding: 10px;
+        font-size: 14px; /* Reduce font size for buttons */
     }
 }
