@@ -60,3 +60,44 @@ h1 {
     margin-top: 0; /* Remove extra margin */
     padding-top: 20px; /* Add slight padding for spacing */
 }
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    #game-content {
+        height: auto; /* Let the content dictate the height on mobile */
+        padding-bottom: 20px; /* Add some space at the bottom */
+    }
+
+    .composers-container {
+        flex-direction: column; /* Stack composers vertically */
+        align-items: center;
+        top: 5%; /* Adjust to bring composers closer on mobile */
+    }
+
+    .left-composers, .right-composers {
+        flex-direction: row; /* Align composers in a row */
+        justify-content: space-around; /* Space them evenly */
+        width: 100%; /* Full width for the row of composers */
+    }
+
+    .composer {
+        width: 100px; /* Smaller size for mobile */
+        margin: 10px;
+    }
+
+    #buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    button {
+        margin: 5px;
+        padding: 10px 10px;
+        font-size: 14px;
+    }
+
+    #note-display img {
+        width: 100px; /* Adjust the note image size for mobile devices */
+    }
+}
