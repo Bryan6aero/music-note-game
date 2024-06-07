@@ -80,7 +80,7 @@ h1 {
 
     #start-menu {
         justify-content: flex-start; /* Align items to the start */
-        padding-top: 10px; /* Reduce padding at the top */
+        padding-top: 1px; /* Reduce padding at the top */
     }
 
     button {
