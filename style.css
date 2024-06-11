@@ -68,7 +68,7 @@ h1 {
         align-items: center;
         top: 5%; /* Adjusted to reduce space at the top */
         width: auto;
-        height: 90%; /* Ensure it takes most of the viewport height */
+        height: 80%; /* Ensure it takes most of the viewport height */
     }
 
     .left-composers, .right-composers {
