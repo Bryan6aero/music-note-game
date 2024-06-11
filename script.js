@@ -1,6 +1,6 @@
 const trebleNotes = ['tC', 'tD', 'tE', 'tF', 'tG', 'tA', 'tB'];
 const bassNotes = ['bC', 'bD', 'bE', 'bF', 'bG', 'bA', 'bB'];
-const composers = ['bach', 'beethoven', 'mozart', 'schubert', 'tch', 'chopin'];
+const composers = ['bach', 'beethoven', 'mozart', 'schubert', 'tchaikovsky', 'chopin'];
 
 let score = 0;
 let mistakes = 0;
@@ -93,15 +93,16 @@ function checkAnswer(selectedNote) {
         score++;
     } else {
         feedback.textContent = 'Try again.';
-        mistakes++;
         updateComposerImage();
+        mistakes++;
     }
     console.log('Updated score:', score); // Log the updated score
     updateScore();
-    if (mistakes <= composers.length) {
+    if (mistakes < composers.length) {
         setTimeout(startGame, 1000); // Call startGame to generate a new note after 1 second
-    } else {
-        endGame();
+    } else if (mistakes === composers.length) {
+        updateComposerImage();
+        setTimeout(endGame, 1000); // Call endGame after showing the final composer change
     }
 }
 
@@ -116,13 +117,13 @@ function updateScore() {
 }
 
 function updateComposerImage() {
-    if (mistakes <= composers.length) {
-        const composer = composers[mistakes - 1];
-        const img = document.querySelector(`#composer-${composer}`);
+    if (mistakes < composers.length) {
+        const composer = composers[mistakes];
+        const img = document.getElementById(`composer-${composer}`);
         if (img) {
             img.src = `composer-images/angry-${composer}.webp`;
         } else {
-            console.error(`Composer image for ${composer} not found`);
+            console.error(`Composer image not found: composer-${composer}`);
         }
     }
 }
@@ -160,28 +161,8 @@ function playNoteAudio(note) {
 
 function endGame() {
     document.getElementById('game-content').style.display = 'none';
-    const gameOverDiv = document.createElement('div');
-    gameOverDiv.id = 'game-over';
-    gameOverDiv.innerHTML = `
-        <h1>Game Over</h1>
-        <p>Your final score is: ${score}</p>
-        <button id="play-again-button">Play Again</button>
-    `;
-    document.body.appendChild(gameOverDiv);
-    document.getElementById('play-again-button').onclick = () => {
-        gameOverDiv.remove();
-        document.getElementById('start-menu').style.display = 'block';
-        score = 0;
-        mistakes = 0;
-        updateScore();
-        // Reset all composers to happy images
-        composers.forEach(composer => {
-            const img = document.querySelector(`#composer-${composer}`);
-            if (img) {
-                img.src = `composer-images/happy-${composer}.webp`;
-            }
-        });
-    };
+    document.getElementById('game-over').style.display = 'block';
+    document.getElementById('final-score').textContent = `Your final score is: ${score}`;
 }
 
 window.onload = () => {
@@ -190,6 +171,20 @@ window.onload = () => {
         document.getElementById('start-menu').style.display = 'none';
         document.getElementById('game-content').style.display = 'block';
         startGame();
+    };
+
+    const playAgainButton = document.getElementById('play-again-button');
+    playAgainButton.onclick = () => {
+        document.getElementById('game-over').style.display = 'none';
+        document.getElementById('start-menu').style.display = 'block';
+        score = 0;
+        mistakes = 0;
+        updateScore();
+        // Reset all composers to happy images
+        composers.forEach(composer => {
+            const img = document.getElementById(`composer-${composer}`);
+            img.src = `composer-images/happy-${composer}.webp`;
+        });
     };
 
     // Create a score display element
@@ -207,10 +202,21 @@ window.onload = () => {
     }
 
     // Add composer images to the game content
-    composers.forEach(composer => {
-        const img = document.querySelector(`#composer-${composer}`);
-        if (!img) {
-            console.error(`Composer image element with ID composer-${composer} not found`);
-        }
-    });
+    const leftComposersDiv = document.querySelector('.left-composers');
+    const rightComposersDiv = document.querySelector('.right-composers');
+
+    leftComposersDiv.innerHTML = '';
+    rightComposersDiv.innerHTML = '';
+
+    leftComposersDiv.innerHTML += `
+        <img id="composer-bach" src="composer-images/happy-bach.webp" class="composer" alt="Bach">
+        <img id="composer-beethoven" src="composer-images/happy-beethoven.webp" class="composer" alt="Beethoven">
+        <img id="composer-mozart" src="composer-images/happy-mozart.webp" class="composer" alt="Mozart">
+    `;
+
+    rightComposersDiv.innerHTML += `
+        <img id="composer-schubert" src="composer-images/happy-schubert.webp" class="composer" alt="Schubert">
+        <img id="composer-tchaikovsky" src="composer-images/happy-tchaikovsky.webp" class="composer" alt="Tchaikovsky">
+        <img id="composer-chopin" src="composer-images/happy-chopin.webp" class="composer" alt="Chopin">
+    `;
 };
