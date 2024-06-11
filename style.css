@@ -66,7 +66,7 @@ h1 {
     .composers-container {
         flex-direction: column;
         align-items: center;
-        top: 5%; /* Adjusted to reduce space at the top */
+        top: 10%; /* Adjusted to reduce space at the top */
         width: auto;
         height: 80%; /* Ensure it takes most of the viewport height */
     }
