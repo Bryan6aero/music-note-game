@@ -13,6 +13,11 @@ document.getElementById('start-game').addEventListener('click', () => {
   newQuestion();
 });
 
+// Helper Function to Get Image Path
+function getImagePath(clef, note, suffix) {
+  return `images/${clef}-${note}0(${suffix}).PNG`;
+}
+
 // Generate New Question
 function newQuestion() {
   currentClef = Math.random() < 0.5 ? 'Trebel' : 'Bass';
@@ -20,9 +25,8 @@ function newQuestion() {
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   const suffix = wrongAnswers + 1;
   
-  // Updated image path without space before parenthesis
-  const imagePath = `images/${currentClef}-${currentNote}0(${suffix}).PNG`;
-  document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}">`;
+  const imagePath = getImagePath(currentClef, currentNote, suffix);
+  document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}" onerror="handleImageError(this)">`;
 }
 
 // Handle Keyboard Input
@@ -57,7 +61,11 @@ function isTop5Score(score) {
 
 // Submit High Score
 document.getElementById('submit-score').addEventListener('click', () => {
-  const name = document.getElementById('player-name').value;
+  const name = document.getElementById('player-name').value.trim();
+  if (name === '') {
+    alert('Please enter your name.');
+    return;
+  }
   highScores.push({ name, score });
   highScores.sort((a, b) => b.score - a.score);
   highScores = highScores.slice(0, 5);
@@ -74,3 +82,10 @@ function showHighScores() {
   document.getElementById('main-menu').style.display = 'block';
   document.getElementById('high-score-input').style.display = 'none';
 }
+
+// Handle Image Load Errors
+function handleImageError(imgElement) {
+  imgElement.onerror = null; // Prevent infinite loop if default image also fails
+  imgElement.src = 'images/default.PNG'; // Path to a default image
+}
+
