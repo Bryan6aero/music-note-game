@@ -1,27 +1,27 @@
-/* Add these new styles */
-.character-img {
-    max-width: 200px;
-    display: block;
-    margin: 20px auto;
-  }
-  
-  #main-menu h1 {
-    color: #2c3e50;
-    margin: 20px 0;
-  }
-  
-  #high-score-input h2 {
-    color: #e74c3c;
-    margin: 20px 0;
-  }
-  
-  /* Keep previous styles and add: */
-  #high-score-input {
-    text-align: center;
-  }
-  
-  #high-score-input input {
-    padding: 8px;
-    margin: 10px;
-    font-size: 16px;
-  }
+.keyboard button {
+  /* Increase padding for larger clickable area */
+  padding: 15px 30px; /* Adjust as needed */
+
+  /* Increase font size for better visibility */
+  font-size: 24px; /* Adjust as needed */
+
+  /* Optionally, set a fixed width and height */
+  width: 100px; /* Adjust as needed */
+  height: 60px; /* Adjust as needed */
+
+  /* Maintain existing styles */
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+
+  /* Optional: Add a transition for a smooth hover effect */
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Optional: Enhance hover effects for better user interaction */
+.keyboard button:hover {
+  background-color: #27ae60; /* Darker shade on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
