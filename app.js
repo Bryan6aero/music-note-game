@@ -21,7 +21,7 @@ function newQuestion() {
   const suffix = wrongAnswers + 1;
   
   // Updated image path without space before parenthesis
-  const imagePath = `images/${currentClef}-${currentNote}0(${suffix}).png`;
+  const imagePath = `images/${currentClef}-${currentNote}0(${suffix}).PNG`;
   document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}">`;
 }
 
