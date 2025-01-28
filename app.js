@@ -20,7 +20,7 @@ function newQuestion() {
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   const suffix = wrongAnswers + 1;
   
-  // Example image path (adjust based on your actual file structure)
+  // Updated image path without space before parenthesis
   const imagePath = `images/${currentClef}-${currentNote}0(${suffix}).png`;
   document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}">`;
 }
