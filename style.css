@@ -165,7 +165,7 @@ img {
   
   /* Adjust Game Screen Composer Image */
   #game-screen #composer-image img {
-    max-width: 250px;           /* Reduce max-width */
+    max-width: 1500px;           /* Reduce max-width */
     height: auto;               /* Maintain aspect ratio */
     margin: 0 auto 20px;        /* Center horizontally and add bottom margin */
   }
