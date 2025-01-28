@@ -21,8 +21,9 @@ img {
 }
 
 #main-menu .character-img {
-  width: 30vw;             /* 30% of viewport width */
-  max-width: 250px;        /* Maximum width to prevent excessive size */
+  width: 80%;              /* Changed from vw to percentage */
+  min-width: 200px;        /* Added minimum size */
+  max-width: 400px;        /* Increased maximum size */
   height: auto;
   margin-bottom: 20px;
 }
@@ -34,7 +35,7 @@ img {
 
 #start-game {
   padding: 15px 30px;
-  font-size: 1.2rem;       /* Relative font size */
+  font-size: 1.2rem;
   background-color: #3498db;
   color: white;
   border: none;
@@ -54,34 +55,34 @@ img {
 }
 
 #composer-image img {
-  width: 40vw;             /* 40% of viewport width */
-  max-width: 300px;        /* Maximum width */
+  width: 80%;              /* Changed from vw to percentage */
+  min-width: 250px;        /* Added minimum size */
+  max-width: 500px;        /* Increased maximum size */
   height: auto;
   margin-bottom: 20px;
 }
 
 #score {
-  font-size: 1.5rem;       /* Relative font size */
+  font-size: 1.5rem;
   margin: 20px 0;
 }
 
 /* Keyboard Container */
 .keyboard {
-  display: flex;                  /* Enable Flexbox */
-  justify-content: center;        /* Center buttons horizontally */
-  flex-wrap: wrap;                /* Allow buttons to wrap */
-  gap: 15px;                      /* Space between buttons */
-  margin-top: 20px;               /* Space above the keyboard */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 /* Keyboard Buttons */
 .keyboard button {
-  /* Increase size by approximately 30% */
-  padding: 15px 30px;             /* Increased padding */
-  font-size: 1.3rem;              /* Increased font size */
-  width: 15vw;                     /* 15% of viewport width */
-  max-width: 150px;               /* Maximum width */
-  height: 60px;                   /* Maintain height */
+  padding: 15px 30px;
+  font-size: 1.3rem;
+  width: 15vw;
+  max-width: 150px;
+  height: 60px;
   background-color: #2ecc71;
   color: white;
   border: none;
@@ -91,8 +92,8 @@ img {
 }
 
 .keyboard button:hover {
-  background-color: #27ae60;      /* Darker green on hover */
-  transform: scale(1.05);         /* Slightly enlarge on hover */
+  background-color: #27ae60;
+  transform: scale(1.05);
 }
 
 /* High Score Input */
@@ -102,8 +103,9 @@ img {
 }
 
 #high-score-input .character-img {
-  width: 30vw;             /* 30% of viewport width */
-  max-width: 250px;        /* Maximum width */
+  width: 80%;              /* Changed from vw to percentage */
+  min-width: 200px;        /* Added minimum size */
+  max-width: 400px;        /* Increased maximum size */
   height: auto;
   margin-bottom: 20px;
 }
@@ -116,14 +118,14 @@ img {
 #high-score-input input {
   padding: 10px;
   margin: 10px;
-  font-size: 1rem;          /* Relative font size */
+  font-size: 1rem;
   width: 80%;
-  max-width: 300px;         /* Limit maximum width */
+  max-width: 300px;
 }
 
 #submit-score {
   padding: 10px 20px;
-  font-size: 1rem;          /* Relative font size */
+  font-size: 1rem;
   background-color: #f1c40f;
   color: white;
   border: none;
@@ -148,142 +150,43 @@ img {
 }
 
 #high-scores div {
-  font-size: 1.2rem;        /* Relative font size */
+  font-size: 1.2rem;
   margin: 5px 0;
 }
 
 /* Responsive Styles */
-
-/* Landscape Orientation on Mobile Devices */
-@media only screen and (max-width: 768px) and (orientation: landscape) {
+@media only screen and (max-width: 768px) and (orientation: landscape),
+       only screen and (max-width: 768px) and (orientation: portrait) {
+  /* Unified mobile styles for both orientations */
   
-  /* Adjust Main Menu Character Image */
-  #main-menu .character-img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
-  }
-  
-  /* Adjust Game Screen Composer Image */
-  #game-screen #composer-image img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
-  }
-  
-  /* Adjust High Score Input Character Image */
+  #main-menu .character-img,
+  #game-screen #composer-image img,
   #high-score-input .character-img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
+    width: 90%;            /* More width on mobile */
+    max-width: 350px;      /* Adjusted for mobile */
+    min-width: 150px;      /* Minimum for mobile */
+    margin-bottom: 15px;
   }
-  
-  /* Adjust Keyboard Container */
-  .keyboard {
-    flex-direction: row;        /* Keep buttons in a row */
-    flex-wrap: wrap;            /* Allow buttons to wrap */
-    justify-content: center;    /* Center buttons */
-    gap: 10px;                  /* Reduce gap between buttons */
-    margin-top: 10px;           /* Reduce top margin */
-  }
-  
-  /* Adjust Keyboard Buttons */
-  .keyboard button {
-    width: 20vw;                /* 20% of viewport width */
-    max-width: 150px;           /* Maintain maximum width */
-    height: 60px;               /* Maintain height */
-    font-size: 1.2rem;          /* Adjust font size */
-    padding: 12px 24px;         /* Adjust padding */
-  }
-  
-  /* Adjust Score Display */
-  #score {
-    font-size: 1.2rem;          /* Adjust font size */
-    margin-bottom: 10px;        /* Reduce bottom margin */
-  }
-  
-  /* Adjust High Score Input Elements */
-  #high-score-input input {
-    width: 80%;
-    max-width: 300px;
-  }
-  
-  #high-score-input button {
-    width: 80%;
-    max-width: 200px;
-    padding: 10px;
-    font-size: 1rem;
-  }
-  
-  /* Adjust High Scores Display */
-  #high-scores div {
-    font-size: 1rem;            /* Reduce font size */
-  }
-}
 
-/* Portrait Orientation on Mobile Devices */
-@media only screen and (max-width: 768px) and (orientation: portrait) {
-  
-  /* Adjust Main Menu Character Image */
-  #main-menu .character-img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
-  }
-  
-  /* Adjust Game Screen Composer Image */
-  #game-screen #composer-image img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
-  }
-  
-  /* Adjust High Score Input Character Image */
-  #high-score-input .character-img {
-    width: 40vw;               /* Increase width */
-    max-width: 300px;          /* Adjust maximum width */
-    margin-bottom: 20px;
-  }
-  
-  /* Adjust Keyboard Container */
   .keyboard {
-    flex-direction: row;        /* Keep buttons in a row */
-    flex-wrap: wrap;            /* Allow buttons to wrap */
-    justify-content: center;    /* Center buttons */
-    gap: 10px;                  /* Reduce gap between buttons */
-    margin-top: 10px;           /* Reduce top margin */
+    gap: 10px;
+    margin-top: 15px;
   }
-  
-  /* Adjust Keyboard Buttons */
+
   .keyboard button {
-    width: 20vw;                /* 20% of viewport width */
-    max-width: 150px;           /* Maintain maximum width */
-    height: 60px;               /* Maintain height */
-    font-size: 1.2rem;          /* Adjust font size */
-    padding: 12px 24px;         /* Adjust padding */
+    width: 20vw;
+    max-width: 130px;
+    height: 55px;
+    font-size: 1.1rem;
+    padding: 12px 20px;
   }
-  
-  /* Adjust Score Display */
+
   #score {
-    font-size: 1.2rem;          /* Adjust font size */
-    margin-bottom: 10px;        /* Reduce bottom margin */
+    font-size: 1.2rem;
+    margin: 15px 0;
   }
-  
-  /* Adjust High Score Input Elements */
+
   #high-score-input input {
-    width: 80%;
-    max-width: 300px;
-  }
-  
-  #high-score-input button {
-    width: 80%;
-    max-width: 200px;
-    padding: 10px;
-    font-size: 1rem;
-  }
-  
-  /* Adjust High Scores Display */
-  #high-scores div {
-    font-size: 1rem;            /* Reduce font size */
+    max-width: 250px;
   }
 }
