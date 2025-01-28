@@ -190,3 +190,50 @@ img {
     max-width: 250px;
   }
 }
+
+
+/* Instructions Page */
+#instructions-page {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.instructions-text {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 20px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+#show-instructions {
+  margin: 15px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  background-color: #f1c40f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+#show-instructions:hover {
+  background-color: #d4ac0d;
+}
+
+#back-to-menu {
+  margin-top: 20px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+#back-to-menu:hover {
+  background-color: #1a252f;
+}
