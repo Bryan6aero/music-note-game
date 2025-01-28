@@ -114,3 +114,14 @@ function handleImageError(imgElement) {
   imgElement.src = 'images/default.PNG'; // Path to a default image
 }
 
+// Show Instructions
+document.getElementById('show-instructions').addEventListener('click', () => {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('instructions-page').style.display = 'block';
+});
+
+// Return to Main Menu from Instructions
+document.getElementById('back-to-menu').addEventListener('click', () => {
+  document.getElementById('instructions-page').style.display = 'none';
+  document.getElementById('main-menu').style.display = 'block';
+});
