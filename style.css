@@ -2,15 +2,17 @@
 .keyboard {
   display: flex;                  /* Enable Flexbox */
   justify-content: center;        /* Center buttons horizontally */
+  align-items: center;            /* Center buttons vertically */
   gap: 15px;                      /* Space between buttons */
-  margin-top: 20px;               /* Optional: Add some top margin */
+  margin-top: 20px;               /* Space above the keyboard */
+  flex-wrap: wrap;                /* Allow buttons to wrap to the next line if needed */
 }
 
 /* Keyboard Buttons */
 .keyboard button {
-  /* Increased size by ~30% */
-  padding: 20px 40px;             /* Rounded padding */
-  font-size: 31px;                /* Rounded font size */
+  /* Increase size by approximately 30% */
+  padding: 20px 40px;             /* Increased padding */
+  font-size: 31px;                /* Increased font size */
   width: 130px;                   /* Increased width */
   height: 78px;                   /* Increased height */
 
@@ -21,12 +23,22 @@
   cursor: pointer;
   border-radius: 5px;
 
-  /* Optional: Smooth transitions */
+  /* Smooth transitions for hover effects */
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Optional: Enhanced Hover Effects */
+/* Hover Effects for Buttons */
 .keyboard button:hover {
-  background-color: #27ae60;      /* Darker shade on hover */
+  background-color: #27ae60;      /* Darker green on hover */
   transform: scale(1.05);         /* Slightly enlarge on hover */
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 600px) {
+  .keyboard button {
+    padding: 15px 30px;           /* Reduced padding */
+    font-size: 24px;              /* Reduced font size */
+    width: 100px;                 /* Reduced width */
+    height: 60px;                 /* Reduced height */
+  }
 }
