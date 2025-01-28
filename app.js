@@ -21,7 +21,7 @@ function newQuestion() {
   const suffix = wrongAnswers + 1;
   
   // Example image path (adjust based on your actual file structure)
-  const imagePath = `images/${currentClef}-${currentNote}0 (${suffix}).png`;
+  const imagePath = `images/${currentClef}-${currentNote}0(${suffix}).png`;
   document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}">`;
 }
 
