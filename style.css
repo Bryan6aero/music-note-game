@@ -1,27 +1,32 @@
+/* Keyboard Container */
+.keyboard {
+  display: flex;                  /* Enable Flexbox */
+  justify-content: center;        /* Center buttons horizontally */
+  gap: 15px;                      /* Space between buttons */
+  margin-top: 20px;               /* Optional: Add some top margin */
+}
+
+/* Keyboard Buttons */
 .keyboard button {
-  /* Increase padding for larger clickable area */
-  padding: 15px 30px; /* Adjust as needed */
+  /* Increased size by ~30% */
+  padding: 20px 40px;             /* Rounded padding */
+  font-size: 31px;                /* Rounded font size */
+  width: 130px;                   /* Increased width */
+  height: 78px;                   /* Increased height */
 
-  /* Increase font size for better visibility */
-  font-size: 24px; /* Adjust as needed */
-
-  /* Optionally, set a fixed width and height */
-  width: 100px; /* Adjust as needed */
-  height: 60px; /* Adjust as needed */
-
-  /* Maintain existing styles */
+  /* Existing styles */
   background-color: #2ecc71;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
 
-  /* Optional: Add a transition for a smooth hover effect */
+  /* Optional: Smooth transitions */
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Optional: Enhance hover effects for better user interaction */
+/* Optional: Enhanced Hover Effects */
 .keyboard button:hover {
-  background-color: #27ae60; /* Darker shade on hover */
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  background-color: #27ae60;      /* Darker shade on hover */
+  transform: scale(1.05);         /* Slightly enlarge on hover */
 }
