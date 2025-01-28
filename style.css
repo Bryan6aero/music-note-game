@@ -224,21 +224,21 @@ img {
   
   /* Adjust Main Menu Character Image */
   #main-menu .character-img {
-    max-width: 180px;           /* Slightly larger than landscape */
+    max-width: 250px;           /* Increased max-width */
     height: auto;
     margin: 0 auto 20px;
   }
   
   /* Adjust Game Screen Composer Image */
   #game-screen #composer-image img {
-    max-width: 180px;           /* Slightly larger than landscape */
+    max-width: 250px;           /* Increased max-width */
     height: auto;
     margin: 0 auto 20px;
   }
   
   /* Adjust High Score Input Character Image */
   #high-score-input .character-img {
-    max-width: 180px;           /* Slightly larger than landscape */
+    max-width: 250px;           /* Increased max-width */
     height: auto;
     margin: 0 auto 20px;
   }
@@ -255,7 +255,7 @@ img {
   /* Adjust Keyboard Buttons */
   .keyboard button {
     width: 40%;                 /* Make buttons take up 40% of the container's width */
-    max-width: 150px;           /* Limit maximum width */
+    max-width: 200px;           /* Limit maximum width */
     height: 60px;               /* Maintain height */
     font-size: 20px;            /* Maintain font size */
     padding: 10px 20px;         /* Maintain padding */
@@ -263,7 +263,7 @@ img {
   
   /* Adjust Score Display */
   #score {
-    font-size: 20px;            /* Reduce font size */
+    font-size: 20px;            /* Maintain readability */
     margin-bottom: 10px;        /* Reduce bottom margin */
   }
   
@@ -276,12 +276,12 @@ img {
   #high-score-input button {
     width: 80%;                 /* Make button take up 80% of the container's width */
     max-width: 200px;           /* Limit maximum width */
-    padding: 10px;              /* Reduce padding */
-    font-size: 18px;            /* Reduce font size */
+    padding: 10px;              /* Maintain padding */
+    font-size: 18px;            /* Maintain font size */
   }
   
   /* Adjust High Scores Display */
   #high-scores div {
-    font-size: 18px;            /* Reduce font size */
+    font-size: 18px;            /* Maintain readability */
   }
 }
