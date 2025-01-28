@@ -17,11 +17,12 @@ img {
 /* Main Menu */
 #main-menu {
   text-align: center;
-  padding: 50px;
+  padding: 50px 20px;
 }
 
 #main-menu .character-img {
-  max-width: 200px;    /* Adjust as needed */
+  width: 30vw;             /* 30% of viewport width */
+  max-width: 250px;        /* Maximum width to prevent excessive size */
   height: auto;
   margin-bottom: 20px;
 }
@@ -33,12 +34,13 @@ img {
 
 #start-game {
   padding: 15px 30px;
-  font-size: 18px;
+  font-size: 1.2rem;       /* Relative font size */
   background-color: #3498db;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
 #start-game:hover {
@@ -48,17 +50,18 @@ img {
 /* Game Screen */
 #game-screen {
   text-align: center;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 #composer-image img {
-  max-width: 200px;    /* Adjust as needed */
+  width: 40vw;             /* 40% of viewport width */
+  max-width: 300px;        /* Maximum width */
   height: auto;
   margin-bottom: 20px;
 }
 
 #score {
-  font-size: 24px;
+  font-size: 1.5rem;       /* Relative font size */
   margin: 20px 0;
 }
 
@@ -66,7 +69,7 @@ img {
 .keyboard {
   display: flex;                  /* Enable Flexbox */
   justify-content: center;        /* Center buttons horizontally */
-  align-items: center;            /* Center buttons vertically */
+  flex-wrap: wrap;                /* Allow buttons to wrap */
   gap: 15px;                      /* Space between buttons */
   margin-top: 20px;               /* Space above the keyboard */
 }
@@ -74,23 +77,19 @@ img {
 /* Keyboard Buttons */
 .keyboard button {
   /* Increase size by approximately 30% */
-  padding: 20px 40px;             /* Increased padding */
-  font-size: 31px;                /* Increased font size */
-  width: 130px;                   /* Increased width */
-  height: 78px;                   /* Increased height */
-
-  /* Existing styles */
+  padding: 15px 30px;             /* Increased padding */
+  font-size: 1.3rem;              /* Increased font size */
+  width: 15vw;                     /* 15% of viewport width */
+  max-width: 150px;               /* Maximum width */
+  height: 60px;                   /* Maintain height */
   background-color: #2ecc71;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-
-  /* Smooth transitions for hover effects */
   transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Hover Effects for Buttons */
 .keyboard button:hover {
   background-color: #27ae60;      /* Darker green on hover */
   transform: scale(1.05);         /* Slightly enlarge on hover */
@@ -99,11 +98,12 @@ img {
 /* High Score Input */
 #high-score-input {
   text-align: center;
-  padding: 50px;
+  padding: 50px 20px;
 }
 
 #high-score-input .character-img {
-  max-width: 200px;    /* Adjust as needed */
+  width: 30vw;             /* 30% of viewport width */
+  max-width: 250px;        /* Maximum width */
   height: auto;
   margin-bottom: 20px;
 }
@@ -116,19 +116,20 @@ img {
 #high-score-input input {
   padding: 10px;
   margin: 10px;
-  font-size: 16px;
-  width: 300px;
-  max-width: 80%;
+  font-size: 1rem;          /* Relative font size */
+  width: 80%;
+  max-width: 300px;         /* Limit maximum width */
 }
 
 #submit-score {
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1rem;          /* Relative font size */
   background-color: #f1c40f;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s;
 }
 
 #submit-score:hover {
@@ -138,7 +139,7 @@ img {
 /* High Scores Display */
 #high-scores {
   text-align: center;
-  padding: 50px;
+  padding: 50px 20px;
 }
 
 #high-scores h2 {
@@ -147,7 +148,7 @@ img {
 }
 
 #high-scores div {
-  font-size: 20px;
+  font-size: 1.2rem;        /* Relative font size */
   margin: 5px 0;
 }
 
@@ -158,64 +159,65 @@ img {
   
   /* Adjust Main Menu Character Image */
   #main-menu .character-img {
-    max-width: 150px;           /* Reduce max-width */
-    height: auto;               /* Maintain aspect ratio */
-    margin: 0 auto 20px;        /* Center horizontally and add bottom margin */
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust Game Screen Composer Image */
   #game-screen #composer-image img {
-    max-width: 1500px;           /* Reduce max-width */
-    height: auto;               /* Maintain aspect ratio */
-    margin: 0 auto 20px;        /* Center horizontally and add bottom margin */
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust High Score Input Character Image */
   #high-score-input .character-img {
-    max-width: 150px;           /* Reduce max-width */
-    height: auto;               /* Maintain aspect ratio */
-    margin: 0 auto 20px;        /* Center horizontally and add bottom margin */
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust Keyboard Container */
   .keyboard {
-    flex-direction: column;     /* Stack buttons vertically */
-    align-items: center;        /* Center buttons horizontally */
+    flex-direction: row;        /* Keep buttons in a row */
+    flex-wrap: wrap;            /* Allow buttons to wrap */
+    justify-content: center;    /* Center buttons */
     gap: 10px;                  /* Reduce gap between buttons */
     margin-top: 10px;           /* Reduce top margin */
   }
   
   /* Adjust Keyboard Buttons */
   .keyboard button {
-    width: 80%;                 /* Make buttons take up 80% of the container's width */
-    max-width: 200px;           /* Limit maximum width */
-    height: 60px;               /* Reduce height */
-    font-size: 20px;            /* Reduce font size */
-    padding: 10px 20px;         /* Reduce padding */
+    width: 20vw;                /* 20% of viewport width */
+    max-width: 150px;           /* Maintain maximum width */
+    height: 60px;               /* Maintain height */
+    font-size: 1.2rem;          /* Adjust font size */
+    padding: 12px 24px;         /* Adjust padding */
   }
   
   /* Adjust Score Display */
   #score {
-    font-size: 20px;            /* Reduce font size */
+    font-size: 1.2rem;          /* Adjust font size */
     margin-bottom: 10px;        /* Reduce bottom margin */
   }
   
   /* Adjust High Score Input Elements */
   #high-score-input input {
-    width: 80%;                 /* Make input take up 80% of the container's width */
-    max-width: 300px;           /* Limit maximum width */
+    width: 80%;
+    max-width: 300px;
   }
   
   #high-score-input button {
-    width: 80%;                 /* Make button take up 80% of the container's width */
-    max-width: 200px;           /* Limit maximum width */
-    padding: 10px;              /* Reduce padding */
-    font-size: 18px;            /* Reduce font size */
+    width: 80%;
+    max-width: 200px;
+    padding: 10px;
+    font-size: 1rem;
   }
   
   /* Adjust High Scores Display */
   #high-scores div {
-    font-size: 18px;            /* Reduce font size */
+    font-size: 1rem;            /* Reduce font size */
   }
 }
 
@@ -224,64 +226,64 @@ img {
   
   /* Adjust Main Menu Character Image */
   #main-menu .character-img {
-    max-width: 250px;           /* Increased max-width */
-    height: auto;
-    margin: 0 auto 20px;
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust Game Screen Composer Image */
   #game-screen #composer-image img {
-    max-width: 250px;           /* Increased max-width */
-    height: auto;
-    margin: 0 auto 20px;
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust High Score Input Character Image */
   #high-score-input .character-img {
-    max-width: 250px;           /* Increased max-width */
-    height: auto;
-    margin: 0 auto 20px;
+    width: 40vw;               /* Increase width */
+    max-width: 300px;          /* Adjust maximum width */
+    margin-bottom: 20px;
   }
   
   /* Adjust Keyboard Container */
   .keyboard {
-    flex-direction: row;        /* Keep buttons in a row for portrait */
-    flex-wrap: wrap;            /* Allow buttons to wrap to the next line if needed */
-    justify-content: center;    /* Ensure buttons are centered */
-    gap: 10px;                  /* Maintain gap */
+    flex-direction: row;        /* Keep buttons in a row */
+    flex-wrap: wrap;            /* Allow buttons to wrap */
+    justify-content: center;    /* Center buttons */
+    gap: 10px;                  /* Reduce gap between buttons */
     margin-top: 10px;           /* Reduce top margin */
   }
   
   /* Adjust Keyboard Buttons */
   .keyboard button {
-    width: 40%;                 /* Make buttons take up 40% of the container's width */
-    max-width: 200px;           /* Limit maximum width */
+    width: 20vw;                /* 20% of viewport width */
+    max-width: 150px;           /* Maintain maximum width */
     height: 60px;               /* Maintain height */
-    font-size: 20px;            /* Maintain font size */
-    padding: 10px 20px;         /* Maintain padding */
+    font-size: 1.2rem;          /* Adjust font size */
+    padding: 12px 24px;         /* Adjust padding */
   }
   
   /* Adjust Score Display */
   #score {
-    font-size: 20px;            /* Maintain readability */
+    font-size: 1.2rem;          /* Adjust font size */
     margin-bottom: 10px;        /* Reduce bottom margin */
   }
   
   /* Adjust High Score Input Elements */
   #high-score-input input {
-    width: 80%;                 /* Make input take up 80% of the container's width */
-    max-width: 300px;           /* Limit maximum width */
+    width: 80%;
+    max-width: 300px;
   }
   
   #high-score-input button {
-    width: 80%;                 /* Make button take up 80% of the container's width */
-    max-width: 200px;           /* Limit maximum width */
-    padding: 10px;              /* Maintain padding */
-    font-size: 18px;            /* Maintain font size */
+    width: 80%;
+    max-width: 200px;
+    padding: 10px;
+    font-size: 1rem;
   }
   
   /* Adjust High Scores Display */
   #high-scores div {
-    font-size: 18px;            /* Maintain readability */
+    font-size: 1rem;            /* Reduce font size */
   }
 }
