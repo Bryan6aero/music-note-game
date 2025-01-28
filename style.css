@@ -1,107 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    padding: 0;
-    background-color: white;
-    margin: 0;
-}
-
-#start-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-#start-menu img {
-    max-width: 300px;
-    margin: 20px 0;
-}
-
-#game-content {
-    display: none;
-    height: 100vh;
-    position: relative;
-}
-
-button {
-    margin: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-}
-
-#note-display {
+/* Add these new styles */
+.character-img {
+    max-width: 200px;
+    display: block;
     margin: 20px auto;
-}
-
-.composers-container {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 10%;
-    width: 100%;
-}
-
-.left-composers, .right-composers {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.composer {
-    width: 200px;
-    height: auto;
-    margin: 5px;
-}
-
-h1 {
-    margin-top: 0;
-    padding-top: 20px;
-}
-
-/* Media query for mobile screens */
-@media (max-width: 768px) {
-    .composers-container {
-        flex-direction: column;
-        align-items: center;
-        top: 10%; /* Adjusted to reduce space at the top */
-        width: auto;
-        height: 80%; /* Ensure it takes most of the viewport height */
-    }
-
-    .left-composers, .right-composers {
-        flex-direction: row;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .composer {
-        width: 150px;
-        margin: 5px;
-    }
-
-    #note-display {
-        margin: 10px auto;
-    }
-}
-
-/* Media query for landscape orientation */
-@media (orientation: landscape) and (max-width: 1024px) {
-    .composers-container {
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-        top: 20%;
-    }
-
-    .left-composers, .right-composers {
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
-    .composer {
-        width: 150px;
-    }
-}
+  }
+  
+  #main-menu h1 {
+    color: #2c3e50;
+    margin: 20px 0;
+  }
+  
+  #high-score-input h2 {
+    color: #e74c3c;
+    margin: 20px 0;
+  }
+  
+  /* Keep previous styles and add: */
+  #high-score-input {
+    text-align: center;
+  }
+  
+  #high-score-input input {
+    padding: 8px;
+    margin: 10px;
+    font-size: 16px;
+  }

@@ -1,37 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miss Shaunna's Note Game</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Miss Shaunna's Note Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="start-menu">
-        <h1>Miss Shaunna's Note Game</h1>
-        <img src="game-images/miss-shaunna.png" alt="Miss Shaunna">
-        <div id="player"></div>
-        <button id="play-button">Play Music</button>
-        <button id="start-button">Start Game</button>
+  <!-- Main Menu -->
+  <div id="main-menu">
+    <img src="images/miss-shaunna.png" alt="Miss Shaunna" class="character-img">
+    <h1>Miss Shaunna's Note Game</h1>
+    <button id="start-game">Start Game</button>
+    <div id="high-scores"></div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" style="display: none;">
+    <div id="composer-image"></div>
+    <div id="score">Score: 0</div>
+    <div class="keyboard">
+      <button data-note="A">A</button>
+      <button data-note="B">B</button>
+      <button data-note="C">C</button>
+      <button data-note="D">D</button>
+      <button data-note="E">E</button>
+      <button data-note="F">F</button>
+      <button data-note="G">G</button>
     </div>
-    <div id="game-content" style="display: none;">
-        <div class="composers-container">
-            <div class="left-composers"></div>
-            <div class="right-composers"></div>
-        </div>
-        <h1>Music Note Game</h1>
-        <div id="note-display"></div>
-        <div id="buttons">
-            <!-- Buttons will be generated here -->
-        </div>
-        <div id="feedback"></div>
-    </div>
-    <div id="game-over" style="display: none;">
-        <h1>Game Over</h1>
-        <p id="final-score"></p>
-        <button id="play-again-button">Play Again</button>
-    </div>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+  </div>
+
+  <!-- High Score Input -->
+  <div id="high-score-input" style="display: none;">
+    <img src="images/miss-shaunna.png" alt="Miss Shaunna" class="character-img">
+    <h2>Game Over!</h2>
+    <input type="text" placeholder="Enter your name" id="player-name">
+    <button id="submit-score">Submit</button>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
