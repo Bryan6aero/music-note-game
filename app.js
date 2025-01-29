@@ -3,6 +3,49 @@ let wrongAnswers = 0;
 let currentNote = '';
 let currentClef = '';
 
+
+// Add at the top with other DOM references
+const feedbackElement = document.getElementById('feedback');
+const correctSound = document.getElementById('correct-sound');
+const wrongSound = document.getElementById('wrong-sound');
+
+// Modify the keyboard input handler
+document.querySelectorAll('.keyboard button').forEach(button => {
+  button.addEventListener('click', (e) => {
+    const selectedNote = e.target.dataset.note;
+    
+    if (selectedNote === currentNote) {
+      // Correct answer handling
+      score++;
+      document.getElementById('score').textContent = `Score: ${score}`;
+      showFeedback('correct', 'Correct!');
+      correctSound.play();
+    } else {
+      // Wrong answer handling
+      wrongAnswers++;
+      showFeedback('wrong', "Sorry, but that's not right.");
+      wrongSound.play();
+      if (wrongAnswers >= 7) endGame();
+    }
+    newQuestion();
+  });
+});
+
+// Add new feedback function
+function showFeedback(type, message) {
+  feedbackElement.textContent = message;
+  feedbackElement.className = type;
+  feedbackElement.style.display = 'block';
+  
+  // Reset animation
+  void feedbackElement.offsetWidth; // Trigger reflow
+  feedbackElement.style.animation = 'none';
+  feedbackElement.style.animation = 'fadeOut 1.5s forwards';
+}
+
+
+
+
 // Sample high scores (use localStorage in real implementation)
 let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
@@ -125,3 +168,5 @@ document.getElementById('back-to-menu').addEventListener('click', () => {
   document.getElementById('instructions-page').style.display = 'none';
   document.getElementById('main-menu').style.display = 'block';
 });
+
+
