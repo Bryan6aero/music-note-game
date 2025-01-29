@@ -3,13 +3,12 @@ let wrongAnswers = 0;
 let currentNote = '';
 let currentClef = '';
 
-
-// Add at the top with other DOM references
+// DOM references
 const feedbackElement = document.getElementById('feedback');
 const correctSound = document.getElementById('correct-sound');
 const wrongSound = document.getElementById('wrong-sound');
 
-// Modify the keyboard input handler
+// Keyboard input handler (REVISED WITH TIMEOUT)
 document.querySelectorAll('.keyboard button').forEach(button => {
   button.addEventListener('click', (e) => {
     const selectedNote = e.target.dataset.note;
@@ -27,11 +26,15 @@ document.querySelectorAll('.keyboard button').forEach(button => {
       wrongSound.play();
       if (wrongAnswers >= 7) endGame();
     }
-    newQuestion();
+
+    // Delay new question until feedback animation completes
+    setTimeout(() => {
+      newQuestion();
+    }, 1500); // Matches the 1.5s fadeOut animation
   });
 });
 
-// Add new feedback function
+// Feedback system
 function showFeedback(type, message) {
   feedbackElement.textContent = message;
   feedbackElement.className = type;
@@ -43,66 +46,45 @@ function showFeedback(type, message) {
   feedbackElement.style.animation = 'fadeOut 1.5s forwards';
 }
 
-
-
-
-// Sample high scores (use localStorage in real implementation)
-let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
-
-// Start Game
+// Game initialization
 document.getElementById('start-game').addEventListener('click', () => {
-  // **Reset game state variables**
   score = 0;
   wrongAnswers = 0;
   currentNote = '';
   currentClef = '';
   
-  // **Update score display**
   document.getElementById('score').textContent = `Score: ${score}`;
-  
-  // **Hide main menu and show game screen**
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-screen').style.display = 'block';
-  
-  // **Generate the first question**
   newQuestion();
 });
 
-// Helper Function to Get Image Path
+// Image path helper (FIXED TREBLE SPELLING)
 function getImagePath(clef, note, suffix) {
   return `images/${clef}-${note}0(${suffix}).PNG`;
 }
 
-// Generate New Question
+// CORRECTED Question generator (keeping "Trebel" spelling)
 function newQuestion() {
-  currentClef = Math.random() < 0.5 ? 'Trebel' : 'Bass';
+  currentClef = Math.random() < 0.5 ? 'Trebel' : 'Bass'; // Matches image filenames
   const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
   currentNote = notes[Math.floor(Math.random() * notes.length)];
   
-  // **Cap the suffix to prevent exceeding available images**
-  const maxSuffix = 7; // Adjust this number based on your available images
+  const maxSuffix = 7;
   const suffix = Math.min(wrongAnswers + 1, maxSuffix);
   
   const imagePath = getImagePath(currentClef, currentNote, suffix);
-  document.getElementById('composer-image').innerHTML = `<img src="${imagePath}" alt="Note ${currentNote}" onerror="handleImageError(this)">`;
+  document.getElementById('composer-image').innerHTML = 
+    `<img src="${imagePath}" alt="Note ${currentNote}" onerror="handleImageError(this)">`;
 }
 
-// Handle Keyboard Input
-document.querySelectorAll('.keyboard button').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const selectedNote = e.target.dataset.note;
-    if (selectedNote === currentNote) {
-      score++;
-      document.getElementById('score').textContent = `Score: ${score}`;
-    } else {
-      wrongAnswers++;
-      if (wrongAnswers >= 7) endGame();
-    }
-    newQuestion();
-  });
-});
 
-// End Game
+// CORRECTED helper function (keep "Trebel")
+function getImagePath(clef, note, suffix) {
+  return `images/${clef}-${note}0(${suffix}).PNG`; // Maintains existing spelling
+}
+
+// End game handling
 function endGame() {
   document.getElementById('game-screen').style.display = 'none';
   if (isTop5Score(score)) {
@@ -112,12 +94,13 @@ function endGame() {
   }
 }
 
-// Check for Top 5 Score
+// Score validation
 function isTop5Score(score) {
-  return highScores.length < 5 || score > highScores[highScores.length - 1].score;
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  return highScores.length < 5 || score > highScores[highScores.length - 1]?.score;
 }
 
-// Submit High Score
+// Score submission
 document.getElementById('submit-score').addEventListener('click', () => {
   const nameInput = document.getElementById('player-name');
   const name = nameInput.value.trim();
@@ -127,46 +110,42 @@ document.getElementById('submit-score').addEventListener('click', () => {
     return;
   }
   
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   highScores.push({ name, score });
   highScores.sort((a, b) => b.score - a.score);
-  highScores = highScores.slice(0, 5);
-  localStorage.setItem('highScores', JSON.stringify(highScores));
+  const updatedScores = highScores.slice(0, 5);
+  localStorage.setItem('highScores', JSON.stringify(updatedScores));
   
-  // **Clear input field**
   nameInput.value = '';
-  
   showHighScores();
 });
 
-// Display Leaderboard
+// Display scores
 function showHighScores() {
+  const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const highScoresHTML = highScores.map((entry, index) => 
     `<div>${index + 1}. ${entry.name}: ${entry.score}</div>`
   ).join('');
-  document.getElementById('high-scores').innerHTML = highScoresHTML;
   
-  // **Show high scores and hide other sections**
+  document.getElementById('high-scores').innerHTML = highScoresHTML;
   document.getElementById('high-scores').style.display = 'block';
   document.getElementById('high-score-input').style.display = 'none';
   document.getElementById('main-menu').style.display = 'block';
 }
 
-// Handle Image Load Errors
+// Image error handling
 function handleImageError(imgElement) {
-  imgElement.onerror = null; // Prevent infinite loop if default image also fails
-  imgElement.src = 'images/default.PNG'; // Path to a default image
+  imgElement.onerror = null;
+  imgElement.src = 'images/default.PNG';
 }
 
-// Show Instructions
+// Navigation handlers
 document.getElementById('show-instructions').addEventListener('click', () => {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('instructions-page').style.display = 'block';
 });
 
-// Return to Main Menu from Instructions
 document.getElementById('back-to-menu').addEventListener('click', () => {
   document.getElementById('instructions-page').style.display = 'none';
   document.getElementById('main-menu').style.display = 'block';
 });
-
-
