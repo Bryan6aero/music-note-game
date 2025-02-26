@@ -360,7 +360,7 @@ keyboardContainer.addEventListener('click', (e) => {
     // Wait for feedback fade, then next question
     setTimeout(async () => {
       await newQuestion(currentDifficulty);
-    }, 1500);
+    }, 2500);
   }
 });
 
