@@ -360,7 +360,7 @@ keyboardContainer.addEventListener('click', (e) => {
     // Wait for feedback fade, then next question
     setTimeout(async () => {
       await newQuestion(currentDifficulty);
-    }, 2500);
+    }, 3000);
   }
 });
 
@@ -368,13 +368,16 @@ keyboardContainer.addEventListener('click', (e) => {
  * 9) Feedback system
  ************************************************************/
 function showFeedback(type, message) {
-  feedbackElement.textContent = message;
-  feedbackElement.className = type;
-  feedbackElement.style.display = 'block';
-  
-  void feedbackElement.offsetWidth; // reflow
+  // Remove any previous animation so it can restart
   feedbackElement.style.animation = 'none';
-  feedbackElement.style.animation = 'fadeOut 1.5s forwards';
+  void feedbackElement.offsetWidth; // force reflow
+
+  feedbackElement.textContent = message;
+  feedbackElement.className = type;  // e.g. 'correct' or 'wrong'
+  feedbackElement.style.display = 'block';
+
+  // Now apply the fade-out again (2.5s)
+  feedbackElement.style.animation = 'fadeOut 2.5s forwards';
 }
 
 /************************************************************
