@@ -4,7 +4,7 @@
 let score = 0;
 let wrongAnswers = 0;
 let currentAnswer = '';
-let currentDifficulty = 'easy'; // will be set on Start Game
+let currentDifficulty = 'easy'; // set by user's radio button
 
 // DOM references
 const feedbackElement = document.getElementById('feedback');
@@ -13,258 +13,172 @@ const wrongSound = document.getElementById('wrong-sound');
 const keyboardContainer = document.querySelector('.keyboard');
 
 /************************************************************
- * 1) Massive dictionary: prefix -> "easy" | "medium" | "hard"
- *    The "prefix" is everything up to (but not including)
- *    the wrong-answer index and "Wrong.jpg".
- * 
- *    For example, if the file is:
- *      "Treble G flat 2 3 Wrong.jpg"
- *    then the prefix is:
- *      "Treble G flat 2"
- *
- *    This is where we label each prefix as easy/medium/hard.
+ * 1) Difficulty Map: prefix -> 'easy' | 'medium' | 'hard'
+ *    "prefix" is the first 4 tokens from your file name
+ *    Example file name: "Bass A flat 0 3 Wrong.jpg"
+ *    => prefix is "Bass A flat 0"
+ *    => 5th token is "3"
+ *    => 6th token is "Wrong"
  ************************************************************/
-const difficultyMap = {
-  // -- Examples from your list. 
-  // -- This is *all* the lines you provided, mapped to easy/medium/hard:
 
-  // Middle C
+const difficultyMap = {
+  // EXAMPLES ONLY:
+  // 'prefix': 'easy' or 'medium' or 'hard'
+  
+  // If your file is "Bass A flat 0 0 Wrong.jpg", the prefix is "Bass A flat 0"
+  // Suppose you decided "Bass A flat 0" is medium:
   "Middle C natural 0": "hard",
   "Middle C sharp 0": "hard",
   "Middle C flat 0": "hard",
-
-  // Treble D natural 0–2
   "Treble D natural 0": "hard",
-  "Treble D natural 1": "easy",
-  "Treble D natural 2": "hard",
-
-  // Treble C natural 0–2
   "Treble C natural 0": "hard",
-  "Treble C natural 1": "easy",
-  "Treble C natural 2": "hard",
-
-  // Treble B natural 0–2
   "Treble B natural 0": "hard",
-  "Treble B natural 1": "easy",
-  "Treble B natural 2": "hard",
-
-  // Treble A natural 0–2
   "Treble A natural 0": "hard",
-  "Treble A natural 1": "easy",
-  "Treble A natural 2": "hard",
-
-  // Treble G natural 0–2
   "Treble G natural 0": "hard",
-  "Treble G natural 1": "easy",
-  "Treble G natural 2": "hard",
-
-  // Treble F natural 0–2
   "Treble F natural 0": "easy",
-  "Treble F natural 1": "easy",
-  "Treble F natural 2": "hard",
-
-  // Treble E natural 0–2
   "Treble E natural 0": "easy",
+  "Treble D natural 1": "easy",
+  "Treble C natural 1": "easy",
+  "Treble B natural 1": "easy",
+  "Treble A natural 1": "easy",
+  "Treble G natural 1": "easy",
+  "Treble F natural 1": "easy",
   "Treble E natural 1": "easy",
+  "Treble D natural 2": "hard",
+  "Treble C natural 2": "hard",
+  "Treble B natural 2": "hard",
+  "Treble A natural 2": "hard",
+  "Treble G natural 2": "hard",
+  "Treble F natural 2": "hard",
   "Treble E natural 2": "hard",
-
-  // Bass A natural 0–3
   "Bass A natural 0": "hard",
-  "Bass A natural 1": "easy",
-  "Bass A natural 2": "easy",
-  "Bass A natural 3": "hard",
-
-  // Bass G natural 0–3
   "Bass G natural 0": "hard",
-  "Bass G natural 1": "easy",
-  "Bass G natural 2": "easy",
-  "Bass G natural 3": "hard",
-
-  // Bass F natural 0–3
   "Bass F natural 0": "hard",
-  "Bass F natural 1": "easy",
-  "Bass F natural 2": "hard",
-  "Bass F natural 3": "hard",
-
-  // Bass E natural 0–2
   "Bass E natural 0": "hard",
-  "Bass E natural 1": "easy",
-  "Bass E natural 2": "hard",
-
-  // Bass D natural 0–1
   "Bass D natural 0": "hard",
-  "Bass D natural 1": "easy",
-
-  // Bass C natural 0–1
   "Bass C natural 0": "hard",
-  "Bass C natural 1": "easy",
-  // (If you have 2 or 3 for these, add them similarly.)
-
-  // Bass B natural 0–1
   "Bass B natural 0": "hard",
-  "Bass B natural 1": "easy",
+  "Bass A natural 1": "easy",
+  "Bass G natural 1": "easy",
+  "Bass F natural 1": "easy",
+  "Bass E natural 1": "easy",
+"Bass D natural 1": "easy",
+"Bass C natural 1": "easy",
+"Bass B natural 1": "easy",
+"Bass A natural 2": "easy",
+"Bass G natural 2": "easy",
+"Bass F natural 2": "hard",
+"Bass E natural 2": "hard",
+"Bass A natural 3": "hard",
+"Bass G natural 3": "hard",
+"Bass F natural 3": "hard",
 
-  // Treble D sharp 0–2
-  "Treble D sharp 0": "hard",
-  "Treble D sharp 1": "medium",
-  "Treble D sharp 2": "hard",
+"Treble D sharp 0": "hard",
+"Treble C sharp 0": "hard",
+"Treble B sharp 0": "hard",
+"Treble A sharp 0": "hard",
+"Treble G sharp 0": "hard",
+"Treble F sharp 0": "medium",
+"Treble E sharp 0": "medium",
+"Treble D sharp 1": "medium",
+"Treble C sharp 1": "medium",
+"Treble B sharp 1": "medium",
+"Treble A sharp 1": "medium",
+"Treble G sharp 1": "medium",
+"Treble F sharp 1": "medium",
+"Treble E sharp 1": "medium",
+"Treble D sharp 2": "hard",
+"Treble C sharp 2": "hard",
+"Treble B sharp 2": "hard",
+"Treble A sharp 2": "hard",
+"Treble G sharp 2": "hard",
+"Treble F sharp 2": "hard",
+"Treble E sharp 2": "hard",
+"Bass A sharp 0": "hard",
+"Bass G sharp 0": "hard",
+"Bass F sharp 0": "hard",
+"Bass E sharp 0": "hard",
+"Bass D sharp 0": "hard",
+"Bass C sharp 0": "hard",
+"Bass B sharp 0": "hard",
+"Bass A sharp 1": "medium",
+"Bass G sharp 1": "medium",
+"Bass F sharp 1": "medium",
+"Bass E sharp 1": "medium",
+"Bass D sharp 1": "medium",
+"Bass C sharp 1": "medium",
+"Bass B sharp 1": "medium",
+"Bass A sharp 2": "medium",
+"Bass G sharp 2": "medium",
+"Bass F sharp 2": "hard",
+"Bass E sharp 2": "hard",
+"Bass A sharp 3": "hard",
+"Bass G sharp 3": "hard",
+"Bass F sharp 3": "hard",
 
-  // Treble C sharp 0–2
-  "Treble C sharp 0": "hard",
-  "Treble C sharp 1": "medium",
-  "Treble C sharp 2": "hard",
+"Treble D flat 0": "hard",
+"Treble C flat 0": "hard",
+"Treble B flat 0": "hard",
+"Treble A flat 0": "hard",
+"Treble G flat 0": "hard",
+"Treble F flat 0": "medium",
+"Treble E flat 0": "medium",
+"Treble D flat 1": "medium",
+"Treble C flat 1": "medium",
+"Treble B flat 1": "medium",
+"Treble A flat 1": "medium",
+"Treble G flat 1": "medium",
+"Treble F flat 1": "medium",
+"Treble E flat 1": "medium",
+"Treble D flat 2": "hard",
+"Treble C flat 2": "hard",
+"Treble B flat 2": "hard",
+"Treble A flat 2": "hard",
+"Treble G flat 2": "hard",
+"Treble F flat 2": "hard",
+"Treble E flat 2": "hard",
+"Bass A flat 0": "hard",
+"Bass G flat 0": "hard",
+"Bass F flat 0": "hard",
+"Bass E flat 0": "hard",
+"Bass D flat 0": "hard",
+"Bass C flat 0": "hard",
+"Bass B flat 0": "hard",
+"Bass A flat 1": "medium",
+"Bass G flat 1": "medium",
+"Bass F flat 1": "medium",
+"Bass E flat 1": "medium",
+"Bass D flat 1": "medium",
+"Bass C flat 1": "medium",
+"Bass B flat 1": "medium",
+"Bass A flat 2": "medium",
+"Bass G flat 2": "medium",
+"Bass F flat 2": "hard",
+"Bass E flat 2": "hard",
+"Bass A flat 3": "hard",
+"Bass G flat 3": "hard",
+"Bass F flat 3": "hard",
 
-  // Treble B sharp 0–2
-  "Treble B sharp 0": "hard",
-  "Treble B sharp 1": "medium",
-  "Treble B sharp 2": "hard",
 
-  // Treble A sharp 0–2
-  "Treble A sharp 0": "hard",
-  "Treble A sharp 1": "medium",
-  "Treble A sharp 2": "hard",
-
-  // Treble G sharp 0–2
-  "Treble G sharp 0": "hard",
-  "Treble G sharp 1": "medium",
-  "Treble G sharp 2": "hard",
-
-  // Treble F sharp 0–2
-  "Treble F sharp 0": "medium",
-  "Treble F sharp 1": "medium",
-  "Treble F sharp 2": "hard",
-
-  // Treble E sharp 0–2
-  "Treble E sharp 0": "medium",
-  "Treble E sharp 1": "medium",
-  "Treble E sharp 2": "hard",
-
-  // Bass A sharp 0–3
-  "Bass A sharp 0": "hard",
-  "Bass A sharp 1": "medium",
-  "Bass A sharp 2": "medium",
-  "Bass A sharp 3": "hard",
-
-  // Bass G sharp 0–3
-  "Bass G sharp 0": "hard",
-  "Bass G sharp 1": "medium",
-  "Bass G sharp 2": "medium",
-  "Bass G sharp 3": "hard",
-
-  // Bass F sharp 0–3
-  "Bass F sharp 0": "hard",
-  "Bass F sharp 1": "medium",
-  "Bass F sharp 2": "hard",
-  "Bass F sharp 3": "hard",
-
-  // Bass E sharp 0–2
-  "Bass E sharp 0": "hard",
-  "Bass E sharp 1": "medium",
-  "Bass E sharp 2": "hard",
-
-  // Bass D sharp 0–1
-  "Bass D sharp 0": "hard",
-  "Bass D sharp 1": "medium",
-
-  // Bass C sharp 0–1
-  "Bass C sharp 0": "hard",
-  "Bass C sharp 1": "medium",
-
-  // Bass B sharp 0–1
-  "Bass B sharp 0": "hard",
-  "Bass B sharp 1": "medium",
-
-  // Treble D flat 0–2
-  "Treble D flat 0": "hard",
-  "Treble D flat 1": "medium",
-  "Treble D flat 2": "hard",
-
-  // Treble C flat 0–2
-  "Treble C flat 0": "hard",
-  "Treble C flat 1": "medium",
-  "Treble C flat 2": "hard",
-
-  // Treble B flat 0–2
-  "Treble B flat 0": "hard",
-  "Treble B flat 1": "medium",
-  "Treble B flat 2": "hard",
-
-  // Treble A flat 0–2
-  "Treble A flat 0": "hard",
-  "Treble A flat 1": "medium",
-  "Treble A flat 2": "hard",
-
-  // Treble G flat 0–2
-  "Treble G flat 0": "hard",
-  "Treble G flat 1": "medium",
-  "Treble G flat 2": "hard",
-
-  // Treble F flat 0–2
-  "Treble F flat 0": "medium",
-  "Treble F flat 1": "medium",
-  "Treble F flat 2": "hard",
-
-  // Treble E flat 0–2
-  "Treble E flat 0": "medium",
-  "Treble E flat 1": "medium",
-  "Treble E flat 2": "hard",
-
-  // Bass A flat 0–3
-  "Bass A flat 0": "hard",
-  "Bass A flat 1": "medium",
-  "Bass A flat 2": "medium",
-  "Bass A flat 3": "hard",
-
-  // Bass G flat 0–3
-  "Bass G flat 0": "hard",
-  "Bass G flat 1": "medium",
-  "Bass G flat 2": "medium",
-  "Bass G flat 3": "hard",
-
-  // Bass F flat 0–3
-  "Bass F flat 0": "hard",
-  "Bass F flat 1": "medium",
-  "Bass F flat 2": "hard",
-  "Bass F flat 3": "hard",
-
-  // Bass E flat 0–2
-  "Bass E flat 0": "hard",
-  "Bass E flat 1": "medium",
-  "Bass E flat 2": "hard",
-
-  // Bass D flat 0–1
-  "Bass D flat 0": "hard",
-  "Bass D flat 1": "medium",
-
-  // Bass C flat 0–1
-  "Bass C flat 0": "hard",
-  "Bass C flat 1": "medium",
-
-  // Bass B flat 0–1
-  "Bass B flat 0": "hard",
-  "Bass B flat 1": "medium",
-
-  // ... If there are any additional lines from your list, include them similarly.
 };
 
 /************************************************************
  * 2) Build arrays for each difficulty
  ************************************************************/
-const allPrefixes = Object.keys(difficultyMap); // every prefix we know
+const allPrefixes = Object.keys(difficultyMap);
 const easyPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'easy');
 const mediumPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'medium');
 const hardPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'hard');
 
 /************************************************************
- * 3) Check if an image file exists via HEAD request
+ * 3) HEAD request to check file existence
  ************************************************************/
 async function imageExists(path) {
   try {
     const response = await fetch(path, { method: 'HEAD' });
     return response.ok; // true if 200–299
   } catch (err) {
-    // e.g. network or CORS error
-    return false;
+    return false; // network error => treat as non-existent
   }
 }
 
@@ -276,59 +190,53 @@ function getRandomInt(min, max) {
 }
 
 /************************************************************
- * 5) newQuestion(difficulty) - picks from the allowed prefixes
+ * 5) newQuestion(difficulty) - picks a prefix in the allowed set,
+ *    checks for the actual file, and displays it if found.
  ************************************************************/
 async function newQuestion(difficulty) {
   const maxTries = 30;
   let tries = 0;
 
-  // Build an array of possible prefixes for the chosen difficulty
-  // Easy => only easy
-  // Medium => easy + medium
-  // Hard => easy + medium + hard
+  // Determine which set of prefixes to choose from
   let candidatePrefixes = [];
   if (difficulty === 'easy') {
     candidatePrefixes = easyPrefixes;
   } else if (difficulty === 'medium') {
     candidatePrefixes = [...easyPrefixes, ...mediumPrefixes];
   } else {
-    // "hard"
+    // 'hard'
     candidatePrefixes = [...easyPrefixes, ...mediumPrefixes, ...hardPrefixes];
   }
 
-  // If for some reason candidatePrefixes is empty, fallback
+  // If no prefixes, show fallback
   if (candidatePrefixes.length === 0) {
     document.getElementById('composer-image').innerHTML =
-      '<p style="color:red;">No prefixes available for this difficulty!</p>';
+      '<p style="color:red;">No prefixes found for this difficulty!</p>';
     keyboardContainer.innerHTML = '';
     return;
   }
 
   while (tries < maxTries) {
-    // Pick a random prefix from the candidate list
+    // 1) Pick a random prefix from candidatePrefixes
     const prefix = candidatePrefixes[getRandomInt(0, candidatePrefixes.length - 1)];
 
-    // Suffix is the number of wrong answers (0–6)
-    const suffix = Math.min(wrongAnswers, 6);
+    // 2) The 5th token is the number of wrong answers (0–6)
+    const wrongIndex = Math.min(wrongAnswers, 6);
 
-    // The final file path is e.g.:
-    //   "Treble G sharp 1" + " " + suffix + " Wrong.jpg"
-    // => "Treble G sharp 1 2 Wrong.jpg"
-    const imagePath = `note-images/${prefix} ${suffix} Wrong.jpg`;
+    // 3) Build the file name: "<prefix> <wrongIndex> Wrong.jpg"
+    const fileName = `${prefix} ${wrongIndex} Wrong.jpg`;
+    const imagePath = `note-images/${fileName}`;
 
-    // Check if it exists
+    // 4) Check if file exists
     if (await imageExists(imagePath)) {
-      // We found a valid file!
-      // Show the image
+      // Found a valid file
       document.getElementById('composer-image').innerHTML =
         `<img src="${imagePath}" alt="Note ${prefix}" onerror="handleImageError(this)">`;
 
-      // The correct answer is basically the prefix but omitting the "variant" for user display,
-      // or do your old "formatAnswer" logic. If you used to parse (clef, note, accidental),
-      // do that here. For simplicity, let's just treat the prefix as the answer:
+      // The correct answer is a user-friendly version of the prefix
       currentAnswer = formatAnswerFromPrefix(prefix);
 
-      // Now build distractor buttons
+      // Build the distractor buttons
       buildAnswerButtons(prefix);
 
       return; // done
@@ -337,7 +245,7 @@ async function newQuestion(difficulty) {
     tries++;
   }
 
-  // If we reach here, we couldn't find an existing file
+  // If we get here, no valid image found after maxTries
   document.getElementById('composer-image').innerHTML =
     '<img src="images/default.PNG" alt="No valid image found">';
   keyboardContainer.innerHTML =
@@ -345,69 +253,56 @@ async function newQuestion(difficulty) {
 }
 
 /************************************************************
- * 6) Convert prefix -> user-facing answer
- *    e.g. "Treble F natural 1" -> "Treble F natural"
- *    or omit "natural" if you like.
+ * 6) Convert prefix to user-facing answer (omitting "natural")
+ *    e.g. "Bass A flat 0" => "Bass A flat"
  ************************************************************/
 function formatAnswerFromPrefix(prefix) {
-  // prefix is like "Treble G natural 1"
-  // let's split:
+  // prefix is like "Bass A flat 0"
+  // let's split by space
   const parts = prefix.split(' '); 
-  // e.g. parts = ["Treble","G","natural","1"]
+  // e.g. ["Bass", "A", "flat", "0"]
 
-  // The last part is the "variant" (0,1,2,3).
-  const variant = parts[parts.length - 1]; 
-  // everything before that is "Treble G natural"
-  const clefAndNote = parts.slice(0, parts.length - 1); 
-  // e.g. ["Treble","G","natural"]
+  // The last part is "0" (the 4th token).
+  // We'll remove that so the user sees just the clef & note
+  parts.pop(); 
+  // now we have ["Bass", "A", "flat"]
 
-  // If you want to remove the word "natural" from the display:
-  const accidentalIndex = clefAndNote.findIndex(x => x === 'natural');
-  if (accidentalIndex >= 0) {
-    // remove that element
-    clefAndNote.splice(accidentalIndex, 1);
+  // Optionally remove the word "natural" if present
+  const i = parts.indexOf('natural');
+  if (i >= 0) {
+    parts.splice(i, 1);
   }
 
-  // Now re-join
-  // e.g. "Treble G"
-  return clefAndNote.join(' ');
+  // Rejoin
+  return parts.join(' ');
 }
 
 /************************************************************
- * 7) Build distractor buttons (like before)
- *    We'll keep the same logic: 7 total buttons
+ * 7) Build distractor buttons
  ************************************************************/
 function buildAnswerButtons(correctPrefix) {
-  // Parse out the clef from the prefix to keep them consistent
-  // For simplicity, let's just say the first word is always the clef
-  // (Though note you have "Middle C" as well—handle that if needed.)
-  const parts = correctPrefix.split(' ');
-  const clef = parts[0]; // e.g. "Treble" or "Bass" or "Middle"
+  // For a consistent set of distractors, let's pick other prefixes
+  // that share the same clef as the correct prefix
+  const clef = correctPrefix.split(' ')[0]; // "Treble" or "Bass" or "Middle"
 
-  // Our "correct answer" is what we show to the user
+  // The correct answer text:
   const correctAnswer = formatAnswerFromPrefix(correctPrefix);
 
-  // We'll create a set of 7 unique answers: 1 correct + 6 distractors
+  // We'll gather 7 unique answers total
   const options = new Set();
   options.add(correctAnswer);
 
-  // Just pick 6 random from the entire dictionary that share the same clef, for example
-  // Or you can do a more advanced approach. For now let's do a simple approach:
-  while (options.size < 7) {
-    // pick any prefix that starts with the same clef
-    const randomPrefix = allPrefixes.find(p => p.startsWith(clef + ' ')) 
-      // this .find(...) is not random. We need a random approach. Let's do a filter + random pick:
-      // We'll do:
-  }
-
-  // Actually let's do a little function:
+  // Filter all known prefixes to just those that start with same clef
   const sameClefPrefixes = allPrefixes.filter(p => p.startsWith(clef + ' '));
-  while (options.size < 7) {
+
+  // Add random distractors
+  while (options.size < 7 && sameClefPrefixes.length > 0) {
     const randomPick = sameClefPrefixes[getRandomInt(0, sameClefPrefixes.length - 1)];
-    options.add(formatAnswerFromPrefix(randomPick));
+    const distractorText = formatAnswerFromPrefix(randomPick);
+    options.add(distractorText);
   }
 
-  // Now we have 7 answers. Shuffle them into an array.
+  // Shuffle
   const answers = Array.from(options);
   for (let i = answers.length - 1; i > 0; i--) {
     const j = getRandomInt(0, i);
@@ -422,13 +317,13 @@ function buildAnswerButtons(correctPrefix) {
     btn.dataset.answer = answerText;
     keyboardContainer.appendChild(btn);
   });
-  
-  // Store the correct answer globally
+
+  // Set currentAnswer globally
   currentAnswer = correctAnswer;
 }
 
 /************************************************************
- * 8) Event Delegation for button clicks
+ * 8) Event Delegation for answer clicks
  ************************************************************/
 keyboardContainer.addEventListener('click', (e) => {
   if (e.target.tagName.toLowerCase() === 'button') {
@@ -474,7 +369,7 @@ function showFeedback(type, message) {
  * 10) Start Game
  ************************************************************/
 document.getElementById('start-game').addEventListener('click', async () => {
-  // Figure out which difficulty was chosen
+  // Which difficulty was chosen?
   const selectedRadio = document.querySelector('input[name="difficulty"]:checked');
   currentDifficulty = selectedRadio ? selectedRadio.value : 'easy';
 
@@ -485,6 +380,7 @@ document.getElementById('start-game').addEventListener('click', async () => {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-screen').style.display = 'block';
 
+  // Load the first question
   await newQuestion(currentDifficulty);
 });
 
