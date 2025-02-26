@@ -14,54 +14,48 @@ const keyboardContainer = document.querySelector('.keyboard');
 
 /************************************************************
  * 1) Difficulty Map: prefix -> 'easy' | 'medium' | 'hard'
- *    "prefix" is the first 4 tokens from your file name
- *    Example file name: "Bass A flat 0 3 Wrong.jpg"
- *    => prefix is "Bass A flat 0"
- *    => 5th token is "3"
- *    => 6th token is "Wrong"
+ *    "prefix" = first 4 tokens from your file name
+ *    Example file: "Bass A flat 0 2 Wrong.jpg" => prefix: "Bass A flat 0"
+ *
+ *    Fill in all your real prefixes below. This is just an example.
  ************************************************************/
-
 const difficultyMap = {
-  // EXAMPLES ONLY:
-  // 'prefix': 'easy' or 'medium' or 'hard'
-  
-  // If your file is "Bass A flat 0 0 Wrong.jpg", the prefix is "Bass A flat 0"
-  // Suppose you decided "Bass A flat 0" is medium:
-  "Middle C natural 0": "hard",
-  "Middle C sharp 0": "hard",
-  "Middle C flat 0": "hard",
-  "Treble D natural 0": "hard",
-  "Treble C natural 0": "hard",
-  "Treble B natural 0": "hard",
-  "Treble A natural 0": "hard",
-  "Treble G natural 0": "hard",
-  "Treble F natural 0": "easy",
-  "Treble E natural 0": "easy",
-  "Treble D natural 1": "easy",
-  "Treble C natural 1": "easy",
-  "Treble B natural 1": "easy",
-  "Treble A natural 1": "easy",
-  "Treble G natural 1": "easy",
-  "Treble F natural 1": "easy",
-  "Treble E natural 1": "easy",
-  "Treble D natural 2": "hard",
-  "Treble C natural 2": "hard",
-  "Treble B natural 2": "hard",
-  "Treble A natural 2": "hard",
-  "Treble G natural 2": "hard",
-  "Treble F natural 2": "hard",
-  "Treble E natural 2": "hard",
-  "Bass A natural 0": "hard",
-  "Bass G natural 0": "hard",
-  "Bass F natural 0": "hard",
-  "Bass E natural 0": "hard",
-  "Bass D natural 0": "hard",
-  "Bass C natural 0": "hard",
-  "Bass B natural 0": "hard",
-  "Bass A natural 1": "easy",
-  "Bass G natural 1": "easy",
-  "Bass F natural 1": "easy",
-  "Bass E natural 1": "easy",
+"Middle C natural 0": "hard",
+"Middle C sharp 0": "hard",
+"Middle C flat 0": "hard",
+
+"Treble D natural 0": "hard",
+"Treble C natural 0": "hard",
+"Treble B natural 0": "hard",
+"Treble A natural 0": "hard",
+"Treble G natural 0": "hard",
+"Treble F natural 0": "easy",
+"Treble E natural 0": "easy",
+"Treble D natural 1": "easy",
+"Treble C natural 1": "easy",
+"Treble B natural 1": "easy",
+"Treble A natural 1": "easy",
+"Treble G natural 1": "easy",
+"Treble F natural 1": "easy",
+"Treble E natural 1": "easy",
+"Treble D natural 2": "hard",
+"Treble C natural 2": "hard",
+"Treble B natural 2": "hard",
+"Treble A natural 2": "hard",
+"Treble G natural 2": "hard",
+"Treble F natural 2": "hard",
+"Treble E natural 2": "hard",
+"Bass A natural 0": "hard",
+"Bass G natural 0": "hard",
+"Bass F natural 0": "hard",
+"Bass E natural 0": "hard",
+"Bass D natural 0": "hard",
+"Bass C natural 0": "hard",
+"Bass B natural 0": "hard",
+"Bass A natural 1": "easy",
+"Bass G natural 1": "easy",
+"Bass F natural 1": "easy",
+"Bass E natural 1": "easy",
 "Bass D natural 1": "easy",
 "Bass C natural 1": "easy",
 "Bass B natural 1": "easy",
@@ -157,9 +151,7 @@ const difficultyMap = {
 "Bass E flat 2": "hard",
 "Bass A flat 3": "hard",
 "Bass G flat 3": "hard",
-"Bass F flat 3": "hard",
-
-
+"Bass F flat 3": "hard"
 };
 
 /************************************************************
@@ -169,6 +161,21 @@ const allPrefixes = Object.keys(difficultyMap);
 const easyPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'easy');
 const mediumPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'medium');
 const hardPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'hard');
+
+/************************************************************
+ * Helper function: Return an array of prefixes allowed
+ * for a given difficulty (for distractors).
+ ************************************************************/
+function getAllowedPrefixes(difficulty) {
+  if (difficulty === 'easy') {
+    return easyPrefixes;
+  } else if (difficulty === 'medium') {
+    return [...easyPrefixes, ...mediumPrefixes];
+  } else {
+    // 'hard'
+    return [...easyPrefixes, ...mediumPrefixes, ...hardPrefixes];
+  }
+}
 
 /************************************************************
  * 3) HEAD request to check file existence
@@ -190,23 +197,16 @@ function getRandomInt(min, max) {
 }
 
 /************************************************************
- * 5) newQuestion(difficulty) - picks a prefix in the allowed set,
- *    checks for the actual file, and displays it if found.
+ * 5) newQuestion(difficulty) - picks a prefix, checks for
+ *    the actual file, and displays it if found.
  ************************************************************/
 async function newQuestion(difficulty) {
   const maxTries = 30;
   let tries = 0;
 
-  // Determine which set of prefixes to choose from
-  let candidatePrefixes = [];
-  if (difficulty === 'easy') {
-    candidatePrefixes = easyPrefixes;
-  } else if (difficulty === 'medium') {
-    candidatePrefixes = [...easyPrefixes, ...mediumPrefixes];
-  } else {
-    // 'hard'
-    candidatePrefixes = [...easyPrefixes, ...mediumPrefixes, ...hardPrefixes];
-  }
+  // Which set of prefixes do we pick from for the question itself?
+  // For the question, we pick from the same logic as for distractors:
+  let candidatePrefixes = getAllowedPrefixes(difficulty);
 
   // If no prefixes, show fallback
   if (candidatePrefixes.length === 0) {
@@ -217,7 +217,7 @@ async function newQuestion(difficulty) {
   }
 
   while (tries < maxTries) {
-    // 1) Pick a random prefix from candidatePrefixes
+    // 1) Pick a random prefix
     const prefix = candidatePrefixes[getRandomInt(0, candidatePrefixes.length - 1)];
 
     // 2) The 5th token is the number of wrong answers (0–6)
@@ -237,7 +237,7 @@ async function newQuestion(difficulty) {
       currentAnswer = formatAnswerFromPrefix(prefix);
 
       // Build the distractor buttons
-      buildAnswerButtons(prefix);
+      buildAnswerButtons(prefix, difficulty);
 
       return; // done
     }
@@ -257,52 +257,64 @@ async function newQuestion(difficulty) {
  *    e.g. "Bass A flat 0" => "Bass A flat"
  ************************************************************/
 function formatAnswerFromPrefix(prefix) {
-  // prefix is like "Bass A flat 0"
-  // let's split by space
-  const parts = prefix.split(' '); 
-  // e.g. ["Bass", "A", "flat", "0"]
-
-  // The last part is "0" (the 4th token).
-  // We'll remove that so the user sees just the clef & note
-  parts.pop(); 
-  // now we have ["Bass", "A", "flat"]
-
-  // Optionally remove the word "natural" if present
+  // prefix like "Bass A flat 0"
+  const parts = prefix.split(' '); // e.g. ["Bass","A","flat","0"]
+  // Remove the last element ("0")
+  parts.pop();
+  // Optionally remove "natural"
   const i = parts.indexOf('natural');
   if (i >= 0) {
     parts.splice(i, 1);
   }
-
   // Rejoin
   return parts.join(' ');
 }
 
 /************************************************************
  * 7) Build distractor buttons
+ *    - Easy => 3 total options
+ *    - Medium => 5 total
+ *    - Hard => 7 total
+ *    - Wrong answers come from the same difficulty set,
+ *      and optionally same clef (if you want).
  ************************************************************/
-function buildAnswerButtons(correctPrefix) {
-  // For a consistent set of distractors, let's pick other prefixes
-  // that share the same clef as the correct prefix
-  const clef = correctPrefix.split(' ')[0]; // "Treble" or "Bass" or "Middle"
+function buildAnswerButtons(correctPrefix, difficulty) {
+  // Decide how many total options we want
+  let numOptions;
+  if (difficulty === 'easy') {
+    numOptions = 3;
+  } else if (difficulty === 'medium') {
+    numOptions = 5;
+  } else {
+    // 'hard'
+    numOptions = 7;
+  }
 
-  // The correct answer text:
   const correctAnswer = formatAnswerFromPrefix(correctPrefix);
 
-  // We'll gather 7 unique answers total
+  // We'll store final answers in a Set for uniqueness
   const options = new Set();
   options.add(correctAnswer);
 
-  // Filter all known prefixes to just those that start with same clef
-  const sameClefPrefixes = allPrefixes.filter(p => p.startsWith(clef + ' '));
+  // If you still want distractors from the same clef only:
+  const clef = correctPrefix.split(' ')[0]; // "Treble" or "Bass" or "Middle"
+  
+  // Among the allowed prefixes for this difficulty:
+  const allowedPrefixes = getAllowedPrefixes(difficulty);
 
-  // Add random distractors
-  while (options.size < 7 && sameClefPrefixes.length > 0) {
-    const randomPick = sameClefPrefixes[getRandomInt(0, sameClefPrefixes.length - 1)];
-    const distractorText = formatAnswerFromPrefix(randomPick);
-    options.add(distractorText);
+  // Filter them to only those that start with the same clef, if desired
+  const sameClefAllowed = allowedPrefixes.filter(p => p.startsWith(clef + ' '));
+
+  // Add random distractors from that subset
+  while (options.size < numOptions && sameClefAllowed.length > 0) {
+    const randomPick = sameClefAllowed[getRandomInt(0, sameClefAllowed.length - 1)];
+    const distractor = formatAnswerFromPrefix(randomPick);
+    if (distractor !== correctAnswer) {
+      options.add(distractor);
+    }
   }
 
-  // Shuffle
+  // Convert to array & shuffle
   const answers = Array.from(options);
   for (let i = answers.length - 1; i > 0; i--) {
     const j = getRandomInt(0, i);
@@ -318,7 +330,7 @@ function buildAnswerButtons(correctPrefix) {
     keyboardContainer.appendChild(btn);
   });
 
-  // Set currentAnswer globally
+  // Store the correct answer globally
   currentAnswer = correctAnswer;
 }
 
