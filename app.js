@@ -1,19 +1,84 @@
 let score = 0;
 let wrongAnswers = 0;
-let currentNote = '';
-let currentClef = '';
+let currentAnswer = '';
 
 // DOM references
 const feedbackElement = document.getElementById('feedback');
 const correctSound = document.getElementById('correct-sound');
 const wrongSound = document.getElementById('wrong-sound');
+const keyboardContainer = document.querySelector('.keyboard');
 
-// Keyboard input handler (REVISED WITH TIMEOUT)
-document.querySelectorAll('.keyboard button').forEach(button => {
-  button.addEventListener('click', (e) => {
-    const selectedNote = e.target.dataset.note;
-    
-    if (selectedNote === currentNote) {
+// Possible options for the new questions
+const clefs = ['Bass', 'Treble'];
+const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+const accidentals = ['flat', 'natural', 'sharp'];
+
+// Helper: Format the answer string (omit "natural" for button display)
+function formatAnswer(clef, note, accidental) {
+  return accidental === 'natural' ? `${clef} ${note}` : `${clef} ${note} ${accidental}`;
+}
+
+// Helper: Get a random integer between min and max (inclusive)
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Generate a new question
+function newQuestion() {
+  // Choose a random clef, note, and accidental
+  const clef = clefs[getRandomInt(0, clefs.length - 1)];
+  const note = notes[getRandomInt(0, notes.length - 1)];
+  const accidental = accidentals[getRandomInt(0, accidentals.length - 1)];
+
+  // Set the correct answer (formatted)
+  currentAnswer = formatAnswer(clef, note, accidental);
+
+  // Choose a random variant (0 to 3) and a suffix equal to wrongAnswers (clamped to 6)
+  const variant = getRandomInt(0, 3);
+  const suffix = wrongAnswers > 6 ? 6 : wrongAnswers; 
+
+  // Build the image path from the new folder and file naming scheme
+  const imagePath = `note-images/${clef} ${note} ${accidental} ${variant} ${suffix} Wrong.jpg`;
+  document.getElementById('composer-image').innerHTML = 
+    `<img src="${imagePath}" alt="Note ${currentAnswer}" onerror="handleImageError(this)">`;
+
+  // Build answer options: include the correct answer and add distractors (all with the same clef)
+  const options = new Set();
+  options.add(currentAnswer);
+  
+  // Generate distractor options until we have 7 unique choices
+  while(options.size < 7) {
+    const randNote = notes[getRandomInt(0, notes.length - 1)];
+    const randAccidental = accidentals[getRandomInt(0, accidentals.length - 1)];
+    const option = formatAnswer(clef, randNote, randAccidental);
+    options.add(option);
+  }
+  
+  // Convert to array and shuffle the options
+  const optionsArray = Array.from(options);
+  for (let i = optionsArray.length - 1; i > 0; i--) {
+    const j = getRandomInt(0, i);
+    [optionsArray[i], optionsArray[j]] = [optionsArray[j], optionsArray[i]];
+  }
+  
+  // Render the buttons dynamically inside the keyboard container
+  keyboardContainer.innerHTML = '';
+  optionsArray.forEach(option => {
+    const button = document.createElement('button');
+    button.textContent = option;
+    button.setAttribute('data-answer', option);
+    // (Additional inline styling can be removed if your CSS already styles .keyboard button)
+    button.style.padding = "15px 30px";
+    button.style.fontSize = "1.3rem";
+    keyboardContainer.appendChild(button);
+  });
+}
+
+// Event delegation for answer button clicks
+keyboardContainer.addEventListener('click', (e) => {
+  if (e.target.tagName.toLowerCase() === 'button') {
+    const selectedAnswer = e.target.getAttribute('data-answer');
+    if (selectedAnswer === currentAnswer) {
       // Correct answer handling
       score++;
       document.getElementById('score').textContent = `Score: ${score}`;
@@ -24,67 +89,41 @@ document.querySelectorAll('.keyboard button').forEach(button => {
       wrongAnswers++;
       showFeedback('wrong', "Sorry, but that's not right.");
       wrongSound.play();
-      if (wrongAnswers >= 7) endGame();
+      if (wrongAnswers >= 7) {
+        endGame();
+        return;
+      }
     }
-
-    // Delay new question until feedback animation completes
+    // Delay before the next question to allow feedback animation
     setTimeout(() => {
       newQuestion();
-    }, 1500); // Matches the 1.5s fadeOut animation
-  });
+    }, 1500);
+  }
 });
 
-// Feedback system
+// Feedback system remains the same
 function showFeedback(type, message) {
   feedbackElement.textContent = message;
   feedbackElement.className = type;
   feedbackElement.style.display = 'block';
   
-  // Reset animation
-  void feedbackElement.offsetWidth; // Trigger reflow
+  // Restart animation
+  void feedbackElement.offsetWidth;
   feedbackElement.style.animation = 'none';
   feedbackElement.style.animation = 'fadeOut 1.5s forwards';
 }
 
-// Game initialization
+// Start game initialization (resets score and wrongAnswers, shows game screen, and starts first question)
 document.getElementById('start-game').addEventListener('click', () => {
   score = 0;
   wrongAnswers = 0;
-  currentNote = '';
-  currentClef = '';
-  
   document.getElementById('score').textContent = `Score: ${score}`;
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('game-screen').style.display = 'block';
   newQuestion();
 });
 
-// Image path helper (FIXED TREBLE SPELLING)
-function getImagePath(clef, note, suffix) {
-  return `images/${clef}-${note}0(${suffix}).PNG`;
-}
-
-// CORRECTED Question generator (keeping "Trebel" spelling)
-function newQuestion() {
-  currentClef = Math.random() < 0.5 ? 'Trebel' : 'Bass'; // Matches image filenames
-  const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
-  currentNote = notes[Math.floor(Math.random() * notes.length)];
-  
-  const maxSuffix = 7;
-  const suffix = Math.min(wrongAnswers + 1, maxSuffix);
-  
-  const imagePath = getImagePath(currentClef, currentNote, suffix);
-  document.getElementById('composer-image').innerHTML = 
-    `<img src="${imagePath}" alt="Note ${currentNote}" onerror="handleImageError(this)">`;
-}
-
-
-// CORRECTED helper function (keep "Trebel")
-function getImagePath(clef, note, suffix) {
-  return `images/${clef}-${note}0(${suffix}).PNG`; // Maintains existing spelling
-}
-
-// End game handling
+// End game handling (remains as before)
 function endGame() {
   document.getElementById('game-screen').style.display = 'none';
   if (isTop5Score(score)) {
@@ -94,13 +133,12 @@ function endGame() {
   }
 }
 
-// Score validation
+// Score validation and high score submission remain unchanged
 function isTop5Score(score) {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   return highScores.length < 5 || score > highScores[highScores.length - 1]?.score;
 }
 
-// Score submission
 document.getElementById('submit-score').addEventListener('click', () => {
   const nameInput = document.getElementById('player-name');
   const name = nameInput.value.trim();
@@ -120,7 +158,6 @@ document.getElementById('submit-score').addEventListener('click', () => {
   showHighScores();
 });
 
-// Display scores
 function showHighScores() {
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   const highScoresHTML = highScores.map((entry, index) => 
@@ -133,13 +170,13 @@ function showHighScores() {
   document.getElementById('main-menu').style.display = 'block';
 }
 
-// Image error handling
+// Image error handling (remains similar)
 function handleImageError(imgElement) {
   imgElement.onerror = null;
   imgElement.src = 'images/default.PNG';
 }
 
-// Navigation handlers
+// Navigation handlers for instructions remain the same
 document.getElementById('show-instructions').addEventListener('click', () => {
   document.getElementById('main-menu').style.display = 'none';
   document.getElementById('instructions-page').style.display = 'block';
