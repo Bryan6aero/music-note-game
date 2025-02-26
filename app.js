@@ -17,7 +17,7 @@ const keyboardContainer = document.querySelector('.keyboard');
  *    "prefix" = first 4 tokens from your file name
  *    Example file: "Bass A flat 0 2 Wrong.jpg" => prefix: "Bass A flat 0"
  *
- *    Fill in all your real prefixes below. This is just an example.
+ *    Fill in all your real prefixes. This is just an example.
  ************************************************************/
 const difficultyMap = {
 "Middle C natural 0": "hard",
@@ -164,7 +164,7 @@ const hardPrefixes = allPrefixes.filter(p => difficultyMap[p] === 'hard');
 
 /************************************************************
  * Helper function: Return an array of prefixes allowed
- * for a given difficulty (for distractors).
+ * for a given difficulty (for the question or distractors).
  ************************************************************/
 function getAllowedPrefixes(difficulty) {
   if (difficulty === 'easy') {
@@ -197,15 +197,13 @@ function getRandomInt(min, max) {
 }
 
 /************************************************************
- * 5) newQuestion(difficulty) - picks a prefix, checks for
- *    the actual file, and displays it if found.
+ * 5) newQuestion(difficulty)
  ************************************************************/
 async function newQuestion(difficulty) {
   const maxTries = 30;
   let tries = 0;
 
-  // Which set of prefixes do we pick from for the question itself?
-  // For the question, we pick from the same logic as for distractors:
+  // Which set of prefixes do we pick from for the question?
   let candidatePrefixes = getAllowedPrefixes(difficulty);
 
   // If no prefixes, show fallback
@@ -272,23 +270,12 @@ function formatAnswerFromPrefix(prefix) {
 
 /************************************************************
  * 7) Build distractor buttons
- *    - Easy => 3 total options
- *    - Medium => 5 total
- *    - Hard => 7 total
- *    - Wrong answers come from the same difficulty set,
- *      and optionally same clef (if you want).
+ *    Now: always 7 multiple-choice answers, regardless of difficulty.
+ *    But we still limit the *pool* of distractors based on difficulty.
  ************************************************************/
 function buildAnswerButtons(correctPrefix, difficulty) {
-  // Decide how many total options we want
-  let numOptions;
-  if (difficulty === 'easy') {
-    numOptions = 3;
-  } else if (difficulty === 'medium') {
-    numOptions = 5;
-  } else {
-    // 'hard'
-    numOptions = 7;
-  }
+  // We'll show 7 total answers (1 correct + 6 distractors).
+  const numOptions = 7;
 
   const correctAnswer = formatAnswerFromPrefix(correctPrefix);
 
@@ -297,7 +284,7 @@ function buildAnswerButtons(correctPrefix, difficulty) {
   options.add(correctAnswer);
 
   // If you still want distractors from the same clef only:
-  const clef = correctPrefix.split(' ')[0]; // "Treble" or "Bass" or "Middle"
+  const clef = correctPrefix.split(' ')[0]; // "Treble", "Bass", "Middle"
   
   // Among the allowed prefixes for this difficulty:
   const allowedPrefixes = getAllowedPrefixes(difficulty);
@@ -360,7 +347,7 @@ keyboardContainer.addEventListener('click', (e) => {
     // Wait for feedback fade, then next question
     setTimeout(async () => {
       await newQuestion(currentDifficulty);
-    }, 3000);
+    }, 1500);
   }
 });
 
@@ -368,16 +355,16 @@ keyboardContainer.addEventListener('click', (e) => {
  * 9) Feedback system
  ************************************************************/
 function showFeedback(type, message) {
-  // Remove any previous animation so it can restart
+  // reset animation
   feedbackElement.style.animation = 'none';
-  void feedbackElement.offsetWidth; // force reflow
+  void feedbackElement.offsetWidth; // reflow
 
   feedbackElement.textContent = message;
-  feedbackElement.className = type;  // e.g. 'correct' or 'wrong'
+  feedbackElement.className = type;
   feedbackElement.style.display = 'block';
 
-  // Now apply the fade-out again (2.5s)
-  feedbackElement.style.animation = 'fadeOut 2.5s forwards';
+  // re-apply fadeOut (1.5s or however long you want)
+  feedbackElement.style.animation = 'fadeOut 1.5s forwards';
 }
 
 /************************************************************
